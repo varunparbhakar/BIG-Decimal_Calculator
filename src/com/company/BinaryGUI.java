@@ -175,7 +175,7 @@ public class BinaryGUI extends JPanel implements ActionListener {
             valueField1.setText("");
         }
         if (e.getSource() == confirmButton) {
-            if (Number.inputValid(valueField1.getText())){
+            if (Calculator.inputValid(valueField1.getText())){
                 myNumber1 = Integer.parseInt(valueField1.getText());
             } else {
                 oneButton.setEnabled(false);
@@ -200,7 +200,7 @@ public class BinaryGUI extends JPanel implements ActionListener {
             valueField2.setText("");
         }
         if (e.getSource() == confirmButton2) {
-            if (Number.inputValid(valueField2.getText())){
+            if (Calculator.inputValid(valueField2.getText())){
                 myNumber2 = Integer.parseInt(valueField2.getText());
             } else {
                 oneButton2.setEnabled(false);
@@ -210,7 +210,6 @@ public class BinaryGUI extends JPanel implements ActionListener {
             }
         }
         if (e.getSource() == solveButton) {
-            WRITE A SOLVE METHOD
         }
 
     }
