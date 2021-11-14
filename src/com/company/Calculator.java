@@ -53,4 +53,5 @@ public abstract class Calculator{
     public void setSolutionOutput(int solutionOutput) {
         this.solutionOutput = solutionOutput;
     }
+
 }
