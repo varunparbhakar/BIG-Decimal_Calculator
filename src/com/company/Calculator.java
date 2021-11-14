@@ -1,10 +1,14 @@
 package com.company;
 
+import java.math.MathContext;
+
 public abstract class Calculator{
     private int InputValue1;
     private int InputValue2;
     private int solutionOutput;
-    static final int inputLimit = 10;
+    static final int inputLimit = 20;
+
+    final static MathContext PERCISION_CONSTANT = new MathContext(21);
 
     public static boolean inputValid(final String theNumber) {
         return (theNumber.length() <= inputLimit && theNumber.length() != 0);
@@ -19,6 +23,7 @@ public abstract class Calculator{
         return theNumber1 * theNumber2;
     }
     public static double divide(double theNumber1, double theNumber2) {
+
         return theNumber1 / theNumber2;
     }
     public static int remainder(int theNumber1, int theNumber2) {
