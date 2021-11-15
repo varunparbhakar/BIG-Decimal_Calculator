@@ -141,7 +141,12 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
                 if(!isZero(xTextField.getText()) && !isDecimal(yTextField.getText())) {
                     myXValue = new BigDecimal(xTextField.getText());
                     myY_Integer = Integer.parseInt(yTextField.getText());
-                    solutionTextField.setText(BigNumber.power(myXValue, myY_Integer).toPlainString());
+                    String solutionString =(BigNumber.power(myXValue, myY_Integer)).toPlainString();
+                    if (solutionString.length() > Calculator.PRECISION_CONSTANT.getPrecision()) {
+                        solutionTextField.setText("Solution too long to Display");
+                    } else {
+                        solutionTextField.setText(BigNumber.power(myXValue, myY_Integer).toPlainString());
+                    }
                 } else {
                     // I know that if both situations are true both messages will not be provided
                     if (isZero(xTextField.getText())) {
@@ -208,25 +213,6 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
                 solutionTextField.setText("Please enter valid numbers");
             }
         }
-        if (e.getSource() == modButton) {
-            if(isInputValid(xTextField.getText()) && isInputValid(yTextField.getText())){
-                if (!isNegative(xTextField.getText())
-                        && !isDecimal(xTextField.getText())
-                        && !isZero(xTextField.getText())
-                        && !isNegative(yTextField.getText())
-                        && !isDecimal(yTextField.getText())
-                        && !isZero(yTextField.getText())
-                ) {
-                    myXValue = new BigDecimal(xTextField.getText());
-                    myYValue = new BigDecimal(yTextField.getText());
-                    solutionTextField.setText(BigNumber.remainder(myXValue, myYValue).toPlainString());
-                } else {
-                    solutionTextField.setText("Enter positive integers only");
-                }
-            } else {
-                solutionTextField.setText("Please enter valid numbers");
-            }
-        }
         if (e.getSource() == gcdButton) {
             if(isInputValid(xTextField.getText()) && isInputValid(yTextField.getText())){
                 if (!isNegative(xTextField.getText())
@@ -267,19 +253,15 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
         }
     }
 
-    @Override
     public boolean isDecimal(String theNumber) {
         return theNumber.contains(".");
     }
 
-    @Override
     public boolean isNegative(String theNumber) {
         double number = Double.parseDouble(theNumber);
         return number < 0;
     }
 
-
-    @Override
     public boolean isZero(String theNumber) {
         double number = Double.parseDouble(theNumber);
         if (number == 0) {
@@ -319,6 +301,11 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
             }
         }
         return true;
+    }
+
+    @Override
+    public void setSolution(Object theSolution) {
+        solutionTextField.setText((String)theSolution);
     }
 
 }

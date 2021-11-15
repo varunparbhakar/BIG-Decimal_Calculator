@@ -20,7 +20,7 @@ public abstract class Calculator{
         return theNumber1 * theNumber2;
     }
     public static double divide(double theNumber1, double theNumber2) { return theNumber1 / theNumber2;}
-    public static double remainder(double theNumber1, double theNumber2) {
+    public static int remainder(int theNumber1, int theNumber2) {
         return theNumber1 % theNumber2;
     }
 

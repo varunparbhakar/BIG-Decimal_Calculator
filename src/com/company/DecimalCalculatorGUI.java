@@ -108,8 +108,8 @@ public class DecimalCalculatorGUI extends JPanel implements NumberGUI{
 
         }
     }
-    public void setSolution(double theSolution) {
-        solution = theSolution;
+    public void setSolution(Object theSolution) {
+         solution =  (double) theSolution;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
@@ -192,20 +192,6 @@ public class DecimalCalculatorGUI extends JPanel implements NumberGUI{
         myOperation = operator;
         return true;
 
-    }
-    @Override
-    public boolean isDecimal(String theNumber) {
-        return theNumber.contains(".");
-    }
-
-    @Override
-    public boolean isNegative(String theNumber) {
-        return false;
-    }
-
-    @Override
-    public boolean isZero(String theNumber) {
-        return false;
     }
 
     @Override

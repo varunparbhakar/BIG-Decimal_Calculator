@@ -103,7 +103,7 @@ public class BigNumber extends Calculator{
         if (theNumber1.equals(BigDecimal.ZERO)) {
             throw new IllegalArgumentException("The base cannot be zero");
         } else {
-            return theNumber1.pow(theNumber2, PRECISION_CONSTANT);
+            return theNumber1.pow(theNumber2);
         }
     }
 

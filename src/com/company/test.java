@@ -6,7 +6,9 @@ import java.awt.event.ActionEvent;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.net.CacheRequest;
+import java.net.Inet4Address;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -21,6 +23,9 @@ public class test{
         ks.add(test);
         ks.setVisible(true);
         ks.setSize(test.getPreferredSize());
+        BigDecimal s = new BigDecimal(456556);
+        MathContext aa = new MathContext(20);
+        System.out.println(s.pow(13, aa));
 
 //        var valueOne = new BigInteger("45");
 //        var valueTwo = new BigInteger("0");

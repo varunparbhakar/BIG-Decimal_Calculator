@@ -4,31 +4,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.Inet4Address;
 
 public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
     JButton oneButton, zeroButton, clearButton, confirmButton,
             oneButton2, zeroButton2, clearButton2, confirmButton2,
             solveButton;
-    JTextField valueField1, valueField2, solutionField;
-    String existingText1, existingText2;
+    JTextField xValueField, yValueField, solutionField;
+    String xExistingField, yExistingField, myBinaryXNumber, myBinaryYNumber;
     JLabel solutionLabel;
     JComboBox operatorSelectB;
-    int myNumber1, myNumber2;
+    int myNumber1, myNumber2, remainder;
+    String solution;
     char myOperator;
     BinaryGUI(){
         this.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        solutionField = new JTextField(20);
+        solutionField = new JTextField(TEXT_FIELD_Length + 5);
         solutionField.setBorder(BorderFactory.createEmptyBorder(10,15,0,0));
         solutionField.setEditable(false);
-        solutionField.setText("454521244");
-        solutionField.setSize(10,10);
+        solutionField.setText("Select an Operation and hit Solve");
+        solutionField.setSize(20,10);
         solutionLabel = new JLabel("Solution:");
         solutionLabel.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
 
-        valueField1 = new JTextField(TEXT_FIELD_Length);
-        valueField1.setEditable(false);
+        xValueField = new JTextField(TEXT_FIELD_Length);
+        xValueField.setEditable(false);
 
         oneButton = new JButton("1");
         zeroButton = new JButton("0");
@@ -43,8 +45,8 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
 
 
 
-        valueField2 = new JTextField(TEXT_FIELD_Length);
-        valueField2.setEditable(false);
+        yValueField = new JTextField(TEXT_FIELD_Length);
+        yValueField.setEditable(false);
         oneButton2 = new JButton("1");
         zeroButton2 = new JButton("0");
         clearButton2 = new JButton("C");
@@ -68,7 +70,7 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
         gbc.gridy = 0;
         gbc.gridwidth = 6;
         gbc.gridheight = 1;
-        this.add(valueField1, gbc);
+        this.add(xValueField, gbc);
 
         gbc.gridx = 7;
         gbc.gridy = 0;
@@ -88,11 +90,7 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
         gbc.gridheight = 1;
         this.add(clearButton, gbc);
 
-        gbc.gridx = 10;
-        gbc.gridy = 0;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        this.add(confirmButton, gbc);
+
 
         gbc.gridx = 1;
         gbc.gridy = 1;
@@ -107,7 +105,7 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
         gbc.gridy = 2;
         gbc.gridwidth = 4;
         gbc.gridheight = 1;
-        this.add(valueField2, gbc);
+        this.add(yValueField, gbc);
 
         gbc.gridx = 7;
         gbc.gridy = 2;
@@ -127,11 +125,7 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
         gbc.gridheight = 1;
         this.add(clearButton2, gbc);
 
-        gbc.gridx = 10;
-        gbc.gridy = 2;
-        gbc.gridwidth = 1;
-        gbc.gridheight = 1;
-        this.add(confirmButton2, gbc);
+
 
         gbc.gridx = 2;
         gbc.gridy = 3;
@@ -145,15 +139,22 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
         gbc.gridheight = 1;
         this.add(solutionLabel, gbc);
 
+
+        gbc.gridx = 1;
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        gbc.gridheight = 1;
+        this.add(solveButton, gbc);
+
         oneButton.setEnabled(false);
         zeroButton.setEnabled(false);
         confirmButton.setEnabled(false);
-        valueField1.setText("Value 1");
+        xValueField.setText("Value 1");
 
         oneButton2.setEnabled(false);
         zeroButton2.setEnabled(false);
         confirmButton2.setEnabled(false);
-        valueField2.setText("Value 2");
+        yValueField.setText("Value 2");
         this.setPreferredSize(new Dimension(553,300));
 
     }
@@ -162,74 +163,87 @@ public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
     public void actionPerformed(ActionEvent e) {
 
         if (e.getSource() == oneButton) {
-            existingText1 = valueField1.getText();
-            valueField1.setText(existingText1 + "1");
+            xExistingField = xValueField.getText();
+            xValueField.setText(xExistingField + "1");
         }
         if (e.getSource() == zeroButton) {
-            existingText1 = valueField1.getText();
-            valueField1.setText(existingText1 + "0");
+            xExistingField = xValueField.getText();
+            xValueField.setText(xExistingField + "0");
         }
         if (e.getSource() == clearButton) {
             oneButton.setEnabled(true);
             zeroButton.setEnabled(true);
             confirmButton.setEnabled(true);
-            valueField1.setText("");
-        }
-        if (e.getSource() == confirmButton) {
-            if (Calculator.inputValid(valueField1.getText())){
-                myNumber1 = Integer.parseInt(valueField1.getText());
-            } else {
-                oneButton.setEnabled(false);
-                zeroButton.setEnabled(false);
-                confirmButton.setEnabled(false);
-                valueField1.setText("Error: Number must be less than 10");
-            }
+            xValueField.setText("");
         }
 
+
         if (e.getSource() == oneButton2) {
-            existingText2 = valueField2.getText();
-            valueField2.setText(existingText2 + "1");
+            yExistingField = yValueField.getText();
+            yValueField.setText(yExistingField + "1");
         }
         if (e.getSource() == zeroButton2) {
-            existingText2 = valueField2.getText();
-            valueField2.setText(existingText2 + "0");
+            yExistingField = yValueField.getText();
+            yValueField.setText(yExistingField + "0");
         }
         if (e.getSource() == clearButton2) {
             oneButton2.setEnabled(true);
             zeroButton2.setEnabled(true);
             confirmButton2.setEnabled(true);
-            valueField2.setText("");
+            yValueField.setText("");
         }
-        if (e.getSource() == confirmButton2) {
-            if (Calculator.inputValid(valueField2.getText())){
-                myNumber2 = Integer.parseInt(valueField2.getText());
-            } else {
-                oneButton2.setEnabled(false);
-                zeroButton2.setEnabled(false);
-                confirmButton2.setEnabled(false);
-                valueField2.setText("Error: Number must be less than 10");
-            }
-        }
+
         if (e.getSource() == solveButton) {
+            myOperator = operatorSelectB.getSelectedItem().toString().charAt(0);
+            myNumber1 = Binary.binaryToInt(xValueField.getText());
+            myNumber2 = Binary.binaryToInt(yValueField.getText());
+            solve();
+
+
+
+
+
         }
 
     }
-
     @Override
-    public boolean isDecimal(String theNumber) {
-        return false;
+    public void setSolution(Object theSolution) {
+        solutionField.setText("Integer: " + theSolution.toString() + ", Binary: " + Integer.toBinaryString((int)Double.parseDouble(solution)) );
     }
 
-    @Override
-    public boolean isNegative(String theNumber) {
-        return false;
+    public void solve() {
+        switch (myOperator) {
+            case '+' :
+                solution = String.valueOf(Binary.add(myNumber1, myNumber2));
+                setSolution(solution);
+                break;
+            case '-':
+                solution = String.valueOf(Binary.subtract(myNumber1, myNumber2));
+                setSolution(solution);
+                break;
+            case '*':
+                solution = String.valueOf(Binary.multiply(myNumber1, myNumber2));
+                setSolution(solution);
+                break;
+            case '/':
+                if (myNumber1 == 0.0 || myNumber2 == 0.0) {
+                    solutionField.setText("Error: Division by 0");
+
+                } else {
+                    solution = String.valueOf(Binary.divide(myNumber1, myNumber2));
+                    remainder = Binary.remainder(myNumber1, myNumber2);
+
+                    solutionField.setText("Integer: " + (int)Double.parseDouble(solution) + " Remainder: " + Binary.remainder(myNumber1, myNumber2)
+                            +  ", Binary: " + Integer.toBinaryString((int)Double.parseDouble(solution)) + " Remainder: " + Binary.remainder(myNumber1, myNumber2) );
+                    break;
+                }
+                break;
+            default:
+                solutionField.setText("Error: Operator not supported");
+
+        }
     }
 
-
-    @Override
-    public boolean isZero(String theNumber) {
-        return false;
-    }
 
     @Override
     public boolean isInputValid(String theInput) {
