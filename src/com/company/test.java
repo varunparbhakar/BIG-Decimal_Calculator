@@ -1,6 +1,8 @@
 package com.company;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -9,27 +11,40 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class test {
+public class test{
 
     public static void main(String[] args) {
-//        JFrame ks = new JFrame();
-//        ks.setSize(500,500);
-//        JPanel test = new BinaryGUI();
-//        test.setVisible(true);
-//        ks.add(test);
-//        ks.setVisible(true);
+        JFrame ks = new JFrame();
+        ks.setSize(1000,1000);
+        JPanel test = new BigNumberGUI();
+        test.setVisible(true);
+        ks.add(test);
+        ks.setVisible(true);
+        ks.setSize(test.getPreferredSize());
 
-        var valueOne = new BigInteger("45");
-        var valueTwo = new BigInteger("0");
-        System.out.println(BigNumber.gcd(valueOne, valueTwo));
-//
-          //tester();
+//        var valueOne = new BigInteger("45");
+//        var valueTwo = new BigInteger("0");
+//        System.out.println(BigNumber.gcd(valueOne, valueTwo));
+////
+//          //tester();
 
 
 
     }
 
 //    public static void tester() {
+//JPanel sd = this;
+//    JButton arm = new JButton("ARM");
+//        arm.addActionListener(new ActionListener() {
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            if(e.getSource() == arm) {
+//                System.out.println(sd.getSize());
+//            }
+//        }
+//    });
+//        this.add(arm);
+//            this.setPreferredSize(new Dimension(720,170));
 //        ArrayList<BigDecimal> testCase = new ArrayList<>();
 //        testCase.add(new BigDecimal(-1.121321231324564542345343543));
 //        testCase.add(new BigDecimal(-1));
@@ -57,3 +72,5 @@ public class test {
 //        }
 //    }
 }
+
+

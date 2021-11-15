@@ -1,14 +1,9 @@
 package com.company;
 
-import javax.imageio.plugins.tiff.TIFFImageReadParam;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-public class BigNumber extends Calculator {
-    private BigDecimal InputValue1;
-    private BigDecimal InputValue2;
-    private BigInteger solutionOutput;
-    private String errorMessage;
+public class BigNumber extends Calculator{
 
     /**
      * This method adds two BigDecimals and returns the results
@@ -17,7 +12,7 @@ public class BigNumber extends Calculator {
      * @return (Number1 + Number2)
      */
     public static BigDecimal add(BigDecimal theNumber1, BigDecimal theNumber2) {
-        return theNumber1.add(theNumber2, PERCISION_CONSTANT);
+        return theNumber1.add(theNumber2, PRECISION_CONSTANT);
     }
 
     /**
@@ -27,7 +22,7 @@ public class BigNumber extends Calculator {
         if (theNumber1.equals(theNumber2)) {
             return BigDecimal.ZERO;
         }
-        return theNumber1.subtract(theNumber2, PERCISION_CONSTANT);
+        return theNumber1.subtract(theNumber2, PRECISION_CONSTANT);
     }
 
     /**
@@ -38,7 +33,7 @@ public class BigNumber extends Calculator {
      */
     public static BigDecimal multiply(BigDecimal theNumber1, BigDecimal theNumber2) {
         if ((!theNumber1.equals(BigDecimal.ZERO) && !theNumber2.equals(BigDecimal.ZERO) ) ) {
-            return theNumber1.multiply(theNumber2, PERCISION_CONSTANT);
+            return theNumber1.multiply(theNumber2, PRECISION_CONSTANT);
         } else if ((theNumber1.equals(BigDecimal.ZERO) || theNumber2.equals(BigDecimal.ZERO) )) {
             return BigDecimal.ZERO;
         } else {
@@ -55,10 +50,9 @@ public class BigNumber extends Calculator {
      * @return
      */
     public static BigDecimal divide(BigDecimal theNumber1, BigDecimal theNumber2) {
-        //DIVIDE BY 0
-        //CATch ARITHMETIC ERROR IN THE GUI
+
         if ((!theNumber1.equals(BigDecimal.ZERO) && !theNumber2.equals(BigDecimal.ZERO) ) ) {
-                return theNumber1.divide(theNumber2, PERCISION_CONSTANT);
+                return theNumber1.divide(theNumber2, PRECISION_CONSTANT);
         } else {
             throw new IllegalArgumentException("There cannot be any 0 numbers");
         }
@@ -73,7 +67,7 @@ public class BigNumber extends Calculator {
     public static BigDecimal remainder(BigDecimal theNumber1, BigDecimal theNumber2) {
         // No Negatives and No Zero No DECIMALS
         if ((!theNumber1.equals(BigDecimal.ZERO) && !theNumber2.equals(BigDecimal.ZERO) ) ) {
-            return theNumber1.remainder(theNumber2, PERCISION_CONSTANT);
+            return theNumber1.remainder(theNumber2, PRECISION_CONSTANT);
         } else {
             throw new IllegalArgumentException("There cannot be any 0 numbers");
         }
@@ -89,7 +83,7 @@ public class BigNumber extends Calculator {
     public static BigDecimal squarerRoot(BigDecimal theNumber1) {
         //No negatives, No Zero
         try {
-            return theNumber1.sqrt(PERCISION_CONSTANT);
+            return theNumber1.sqrt(PRECISION_CONSTANT);
         } catch (ArithmeticException e) {
             throw new IllegalArgumentException("Please enter a positive number");
         }
@@ -98,7 +92,8 @@ public class BigNumber extends Calculator {
 
     /**
      * This method is used for raise the given number to the second given number,
-     * num1^num2.
+     * num1^num2. Despite the calculator not performing num^0, this method
+     * will perform that calculation.
      * @param theNumber1
      * @param theNumber2
      * @return
@@ -108,7 +103,7 @@ public class BigNumber extends Calculator {
         if (theNumber1.equals(BigDecimal.ZERO)) {
             throw new IllegalArgumentException("The base cannot be zero");
         } else {
-            return theNumber1.pow(theNumber2, PERCISION_CONSTANT);
+            return theNumber1.pow(theNumber2, PRECISION_CONSTANT);
         }
     }
 
@@ -118,7 +113,7 @@ public class BigNumber extends Calculator {
      * @return
      */
     public static BigDecimal square(BigDecimal theNumber1) {
-        return theNumber1.pow(2,PERCISION_CONSTANT);
+        return theNumber1.pow(2, PRECISION_CONSTANT);
     }
 
     /**
@@ -129,7 +124,7 @@ public class BigNumber extends Calculator {
      * @author Lim, Teck Hooi
      */
     public static BigDecimal factorial(BigDecimal n, BigDecimal acc) {
-        //No negatives, No decimals
+        //No negatives, No decimals, No Zeros
         if (n.equals(BigDecimal.ONE)) {
             return acc;
         }
@@ -183,11 +178,7 @@ public class BigNumber extends Calculator {
     }
     public static boolean isDecimal(BigDecimal theNumber) {
         String myStringNumber = theNumber.toPlainString();
-        int periodIndex = myStringNumber.indexOf(".");
-        if(myStringNumber.indexOf(".") != -1) {
-            return true;
-        }
-        return false;
+        return myStringNumber.contains(".");
     }
 
 }

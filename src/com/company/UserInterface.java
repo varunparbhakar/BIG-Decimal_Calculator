@@ -1,7 +1,6 @@
 package com.company;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -15,11 +14,12 @@ class UserInterface extends JFrame implements ActionListener {
     JMenu helpMenu;
 
     //Menu Items
-    JMenuItem startItem;
+    JMenuItem decimalCalcItem;
     JMenuItem exitItem;
     JMenuItem aboutItem;
     JMenuItem operationsItem;
     JMenuItem binaryCalcItem;
+    JMenuItem bigNumberCalcItem;
 
     //Frames
     JFrame aboutFrame;
@@ -28,12 +28,12 @@ class UserInterface extends JFrame implements ActionListener {
     //Panels
     JPanel aboutPanel;
     JPanel operatorPanel;
-    JPanel decimalPanel, binaryPanel, hexPanel;
+    JPanel decimalPanel, binaryPanel, bigNumberPanel,  hexPanel;
 
 
     UserInterface() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(400, 400);
+        this.setSize(200, 200);
         this.setLocation(1200, 100);
 
         //Invisible calculator until user presses start
@@ -42,21 +42,25 @@ class UserInterface extends JFrame implements ActionListener {
         decimalPanel.setVisible(false);
         binaryPanel = new BinaryGUI();
         binaryPanel.setVisible(false);
+        bigNumberPanel = new BigNumberGUI();
+        bigNumberPanel.setVisible(false);
 
         calculatorMenu = new JMenu("Calculator");
         helpMenu = new JMenu("Help");
 
-        startItem = new JMenuItem("Start");
+        decimalCalcItem = new JMenuItem("Decimal");
+        binaryCalcItem = new JMenuItem("Binary");
+        bigNumberCalcItem = new JMenuItem("Big Number");
         exitItem = new JMenuItem("Exit");
         aboutItem = new JMenuItem("About");
         operationsItem = new JMenuItem("Operations");
-        binaryCalcItem = new JMenuItem("Binary");
 
-        startItem.addActionListener(this);
+        decimalCalcItem.addActionListener(this);
         exitItem.addActionListener(this);
         aboutItem.addActionListener(this);
         operationsItem.addActionListener(this);
         binaryCalcItem.addActionListener(this);
+        bigNumberCalcItem.addActionListener(this);
 
         //ShortCuts for the menus and the item inside
         // "Alt + "first letter of the menu" then pressed  "first letter of the menu item"
@@ -64,11 +68,12 @@ class UserInterface extends JFrame implements ActionListener {
         calculatorMenu.setMnemonic(KeyEvent.VK_C);
         helpMenu.setMnemonic(KeyEvent.VK_H);
         aboutItem.setMnemonic(KeyEvent.VK_A);
-        startItem.setMnemonic(KeyEvent.VK_S);
+        decimalCalcItem.setMnemonic(KeyEvent.VK_S);
         exitItem.setMnemonic(KeyEvent.VK_E);
 
-        calculatorMenu.add(startItem);
+        calculatorMenu.add(decimalCalcItem);
         calculatorMenu.add(binaryCalcItem);
+        calculatorMenu.add(bigNumberCalcItem);
         calculatorMenu.add(exitItem);
 
         helpMenu.add(aboutItem);
@@ -84,6 +89,7 @@ class UserInterface extends JFrame implements ActionListener {
     public void clearCanvas() {
         decimalPanel.setVisible(false);
         binaryPanel.setVisible(false);
+        bigNumberPanel.setVisible(false);
 
     }
 
@@ -91,20 +97,28 @@ class UserInterface extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == startItem) {
+        if (e.getSource() == decimalCalcItem) {
             clearCanvas();
             this.add(decimalPanel);
+            this.setSize(decimalPanel.getPreferredSize());
             decimalPanel.setVisible(true);
 
         }
         if (e.getSource() == binaryCalcItem) {
             clearCanvas();
             this.add(binaryPanel);
+            this.setSize(binaryPanel.getPreferredSize());
             binaryPanel.setVisible(true);
+        }
+        if (e.getSource() == bigNumberCalcItem) {
+            clearCanvas();
+            this.add(bigNumberPanel);
+            this.setSize(bigNumberPanel.getPreferredSize());
+            bigNumberPanel.setVisible(true);
         }
         if (e.getSource() == aboutItem) {
             aboutFrame = new JFrame();
-            aboutFrame.setSize(357, 97);
+            aboutFrame.setSize(200, 200);
             aboutFrame.setLocation(1350, 100);
             aboutPanel = new JPanel();
             JTextArea aboutME =

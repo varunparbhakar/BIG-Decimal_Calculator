@@ -5,48 +5,63 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class DecimalCalculatorGUI extends JPanel{
+public class DecimalCalculatorGUI extends JPanel implements NumberGUI{
 
-    int number1; //This stores the first number
-    int number2; //This stores the second number
-    char operation; //This stores the solution
+    double myNumber1, myNumber2;
+    char myOperation; //This stores the solution
     double solution;
+    JButton buttonDigits0, buttonDigits1, buttonDigits2, buttonDigits3, buttonDigits4,
+            buttonDigits5, buttonDigits6, buttonDigits7, buttonDigits8, buttonDigits9,
+            buttonPlus, buttonMinus, buttonMultiply, buttonDivide, buttonEquals, buttonC;
+    JButton[] buttonList;
+    JTextField textDisplay;
 
-    public void setSolution(double solution) {
-        this.solution = solution;
-    }
 
 
     DecimalCalculatorGUI() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.BLACK);
-        this.add(mainPanel);
+        this.setBackground(Color.BLACK);
 
-        var textDisplay = new TextField(20);
-        mainPanel.setLayout(new BorderLayout());
-        mainPanel.add(textDisplay, BorderLayout.NORTH);
+        textDisplay = new JTextField(20);
+
+        this.add(textDisplay, BorderLayout.NORTH);
 
         var buttonPanel = new JPanel();
         buttonPanel.setBackground(Color.LIGHT_GRAY);
         buttonPanel.setLayout(new GridLayout(4, 4));
-        mainPanel.add(buttonPanel);
+        this.add(buttonPanel);
 
         // Creating the labels for the number button
-        JButton[] buttonDigits = new JButton[10];
-        for (int i = 0; i < 10; i++)
-            buttonDigits[i] = new JButton(i + "");
+        buttonList = new JButton[]{buttonDigits0, buttonDigits1, buttonDigits2, buttonDigits3, buttonDigits4,
+                buttonDigits5, buttonDigits6, buttonDigits7, buttonDigits8, buttonDigits9};
+        // Creating the labels for the number button
+        for (int i = 0; i < buttonList.length; i++) {
+            buttonList[i] = new JButton(i + "");
+            buttonPanel.add(buttonList[i]);
+            String number = String.valueOf(i);
+            buttonList[i].addActionListener(
+                    new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            String s = textDisplay.getText();
+                            textDisplay.setText(s + number);
+                        }
+                    } );
+        }
 
         // Labeling the operations
-        var buttonPlus = new JButton("+");
-        var buttonMinus = new JButton("-");
-        var buttonMultiply = new JButton("*");
-        var buttonDivide = new JButton("/");
-        var buttonEquals = new JButton("=");
-        var buttonC = new JButton("C");
+        buttonPlus = new JButton("+");
+        buttonPlus.addActionListener(this);
+        buttonMinus = new JButton("-");
+        buttonMinus.addActionListener(this);
+        buttonMultiply = new JButton("*");
+        buttonMultiply.addActionListener(this);
+        buttonDivide = new JButton("/");
+        buttonDivide.addActionListener(this);
+        buttonEquals = new JButton("=");
+        buttonEquals.addActionListener(this);
+        buttonC = new JButton("C");
+        buttonC.addActionListener(this);
 
-        // add all buttons onto the buttonPanel
-        for (int i=0; i<10; i++)
-            buttonPanel.add(buttonDigits[i]);
 
         //Adding the buttons to the panel
         buttonPanel.add(buttonPlus);
@@ -56,118 +71,177 @@ public class DecimalCalculatorGUI extends JPanel{
         buttonPanel.add(buttonEquals);
         buttonPanel.add(buttonC);
 
-        //Adding the operator symbols
-        buttonPlus.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String s = textDisplay.getText();
-                        textDisplay.setText(s + " + ");
-                    }
-                } );
-        buttonMinus.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String s = textDisplay.getText();
-                        textDisplay.setText(s + " - ");
-                    }
-                } );
-        buttonMultiply.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String s = textDisplay.getText();
-                        textDisplay.setText(s + " * ");
-                    }
-                } );
-        buttonDivide.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String s = textDisplay.getText();
-                        textDisplay.setText(s + " / ");
-                    }
-                } );
-        buttonC.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        textDisplay.setText("");
-                    }
-                } );
-
-
-        //Assigning String to Int
-        for (int i = 0; i < 10; i++) {
-            String number = String.valueOf(i);
-            buttonDigits[i].addActionListener(
-                    new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
-                            String s = textDisplay.getText();
-                            textDisplay.setText(s + number);
-                        }
-                    } );
-
-        }
-        buttonEquals.addActionListener(
-                new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        String s = textDisplay.getText();
-                        scanner(textDisplay.getText());
-                        textDisplay.setText(s + " = " + String.valueOf(solution));
-
-                    }
-                } );
+        this.setPreferredSize(new Dimension(250,250));
     }
 
     // This method scans the incoming string and extracts the 2 numbers
     // and the operator.
-    public void scanner(String questionString ) {
+
+
+    public void solve() {
+        String s = textDisplay.getText();
+        switch (myOperation) {
+            case '+' :
+                setSolution(Decimal.add(myNumber1, myNumber2));
+                textDisplay.setText(s + " = " + String.valueOf(solution));
+                break;
+            case '-':
+                setSolution(Decimal.subtract(myNumber1, myNumber2));
+                textDisplay.setText(s + " = " + String.valueOf(solution));
+                break;
+            case '*':
+                setSolution(Decimal.multiply(myNumber1, myNumber2));
+                textDisplay.setText(s + " = " + String.valueOf(solution));
+                break;
+            case '/':
+                if (myNumber1 == 0.0 || myNumber2 == 0.0) {
+                    textDisplay.setText("Error: Division by 0");
+                    setKeyPadStatus(false);
+                } else {
+                    setSolution((float) Decimal.divide(myNumber1, myNumber2));
+                    textDisplay.setText(s + " = " + String.valueOf(solution));
+                }
+                break;
+            default:
+                textDisplay.setText("Error: Operator not supported");
+                setKeyPadStatus(false);
+
+        }
+    }
+    public void setSolution(double theSolution) {
+        solution = theSolution;
+    }
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == buttonEquals) {
+            if(scanner(textDisplay.getText())){
+                solve();
+                setKeyPadStatus(false);
+            } else {
+                textDisplay.setText("Please Enter Valid Numbers");
+            }
+        }
+        if (e.getSource() == buttonC) {
+            setKeyPadStatus(true);
+            solution = 0;
+            textDisplay.setText("");
+        }
+        if (e.getSource() == buttonDivide) {
+            String s = textDisplay.getText();
+            textDisplay.setText(s + " / ");
+        }
+        if (e.getSource() == buttonMultiply) {
+            String s = textDisplay.getText();
+            textDisplay.setText(s + " * ");
+        }
+        if (e.getSource() == buttonMinus) {
+            String s = textDisplay.getText();
+            textDisplay.setText(s + " - ");
+        }
+        if (e.getSource() == buttonPlus) {
+            String s = textDisplay.getText();
+            textDisplay.setText(s + " + ");
+        }
+
+    }
+    public void setKeyPadStatus(boolean value) {
+        for (JButton button : buttonList) {
+            button.setEnabled(value);
+        }
+        buttonPlus.setEnabled(value);
+        buttonMinus.setEnabled(value);
+
+        buttonMultiply.setEnabled(value);
+
+        buttonDivide.setEnabled(value);
+
+        buttonEquals.setEnabled(value);
+
+
+    }
+    public boolean scanner(String theInput ) {
         String number1 = "";
         boolean number1Done = false;
         String number2 = "";
         boolean number2Done = false;
         char operator = 'v';
 
-        for (int i = 0; i < questionString.length(); i++) {
+        for (int i = 0; i < theInput.length(); i++) {
             //Checking up until number 1
-            if(questionString.charAt(i) == ' ' && !number1Done) {
-                number1 = questionString.substring(0,i);
-                operator = questionString.charAt(i+1);
+            if(theInput.charAt(i) == ' ' && !number1Done) {
+                number1 = theInput.substring(0,i);
+                operator = theInput.charAt(i+1);
                 number1Done = true;
                 continue;
             }
             //Checking up until number 2
-            if(questionString.charAt(i) == ' ' && !number2Done) {
-                number2 = questionString.substring(i+1);
+            if(theInput.charAt(i) == ' ' && !number2Done) {
+                number2 = theInput.substring(i+1);
                 number2Done = true;
             }
         }
         //Assigning the extracted numbers and operator.
-        this.number1 = Integer.parseInt(number1);
-        this.number2 = Integer.parseInt(number2);
-        this.operation = operator;
-
-        //Solves the expression with the extracted numbers
-        solve(this.number1, this.number2, operator);
-
+        if (isInputValid(number1) && isInputValid(number2)) {
+            myNumber1 = Integer.parseInt(number1);
+            myNumber2 = Integer.parseInt(number2);
+        } else {
+            setKeyPadStatus(false);
+            textDisplay.setText("Please enter correct values");
+            return false;
+        }
+        myOperation = operator;
+        return true;
 
     }
-    //Solves the expression
-    public void solve(int number1, int number2, char operator) {
-        //Takes in the solution and perform the solution
-        // and setting the solution to the field
-        switch (operator) {
-            case '+' -> setSolution(number1 + number2);
-            case '-' -> setSolution(number1 - number2);
-            case '*' -> setSolution(number1 * number2);
-            case '/' -> setSolution((float)(number1 / number2));
-        };
+    @Override
+    public boolean isDecimal(String theNumber) {
+        return theNumber.contains(".");
     }
 
-}
+    @Override
+    public boolean isNegative(String theNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean isZero(String theNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean isInputValid(String theInput) {
+        if (theInput.length() == 0) {
+            return false;
+        }
+        boolean negative = false;
+        boolean decimal = false;
+        for (int i = 0; i < theInput.length(); i++) {
+            int s = theInput.charAt(i);
+            if(s >= 48 && s<=57 || s == 45 || s == 46) {
+                if (s == 45) {
+                    if (!negative) {
+                        negative = true;
+                    } else {
+                        return false;
+                    }
+                }
+                if (s == 46) {
+                    if (!decimal) {
+                        decimal = true;
+                    } else {
+                        return false;
+                    }
+                }
+
+
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    }
+
 
 

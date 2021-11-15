@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BinaryGUI extends JPanel implements ActionListener {
+public class BinaryGUI extends JPanel implements ActionListener, NumberGUI{
     JButton oneButton, zeroButton, clearButton, confirmButton,
             oneButton2, zeroButton2, clearButton2, confirmButton2,
             solveButton;
@@ -27,7 +27,7 @@ public class BinaryGUI extends JPanel implements ActionListener {
         solutionLabel.setBorder(BorderFactory.createEmptyBorder(10,0,0,0));
 
 
-        valueField1 = new JTextField(20);
+        valueField1 = new JTextField(TEXT_FIELD_Length);
         valueField1.setEditable(false);
 
         oneButton = new JButton("1");
@@ -43,7 +43,7 @@ public class BinaryGUI extends JPanel implements ActionListener {
 
 
 
-        valueField2 = new JTextField(20);
+        valueField2 = new JTextField(TEXT_FIELD_Length);
         valueField2.setEditable(false);
         oneButton2 = new JButton("1");
         zeroButton2 = new JButton("0");
@@ -154,6 +154,7 @@ public class BinaryGUI extends JPanel implements ActionListener {
         zeroButton2.setEnabled(false);
         confirmButton2.setEnabled(false);
         valueField2.setText("Value 2");
+        this.setPreferredSize(new Dimension(553,300));
 
     }
 
@@ -212,5 +213,26 @@ public class BinaryGUI extends JPanel implements ActionListener {
         if (e.getSource() == solveButton) {
         }
 
+    }
+
+    @Override
+    public boolean isDecimal(String theNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean isNegative(String theNumber) {
+        return false;
+    }
+
+
+    @Override
+    public boolean isZero(String theNumber) {
+        return false;
+    }
+
+    @Override
+    public boolean isInputValid(String theInput) {
+        return false;
     }
 }
