@@ -5,7 +5,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
+/**
+ * This is a frame that houses all the calculator gui panels.
+ * @author Varun Parbhkar
+ * @version 11-16-2021
+ */
 class UserInterface extends JFrame implements ActionListener {
+    /*
+     * I made these declarations above my constructor such that other methods can
+     * have access to these variables.
+     */
+
+
     //Menu Bars
     JMenuBar menuBar;
 
@@ -20,6 +31,7 @@ class UserInterface extends JFrame implements ActionListener {
     JMenuItem operationsItem;
     JMenuItem binaryCalcItem;
     JMenuItem bigNumberCalcItem;
+    JMenuItem hexCalcItem;
 
     //Frames
     JFrame aboutFrame;
@@ -44,59 +56,85 @@ class UserInterface extends JFrame implements ActionListener {
         binaryPanel.setVisible(false);
         bigNumberPanel = new BigNumberGUI();
         bigNumberPanel.setVisible(false);
+        hexPanel = new HexGUI();
+        hexPanel.setVisible(false);
 
+
+        //Menus
         calculatorMenu = new JMenu("Calculator");
         helpMenu = new JMenu("Help");
 
+        //Menu Items
         decimalCalcItem = new JMenuItem("Decimal");
         binaryCalcItem = new JMenuItem("Binary");
         bigNumberCalcItem = new JMenuItem("Big Number");
+        hexCalcItem = new JMenuItem("Hex");
         exitItem = new JMenuItem("Exit");
         aboutItem = new JMenuItem("About");
         operationsItem = new JMenuItem("Operations");
 
+        //Adding ActionListener to Menu Items
         decimalCalcItem.addActionListener(this);
         exitItem.addActionListener(this);
         aboutItem.addActionListener(this);
         operationsItem.addActionListener(this);
         binaryCalcItem.addActionListener(this);
         bigNumberCalcItem.addActionListener(this);
+        hexCalcItem.addActionListener(this);
 
         //ShortCuts for the menus and the item inside
         // "Alt + "first letter of the menu" then pressed  "first letter of the menu item"
         // Calculator -> Start -> "Alt+C" -> "S"
         calculatorMenu.setMnemonic(KeyEvent.VK_C);
-        helpMenu.setMnemonic(KeyEvent.VK_H);
-        aboutItem.setMnemonic(KeyEvent.VK_A);
         decimalCalcItem.setMnemonic(KeyEvent.VK_S);
+        binaryCalcItem.setMnemonic(KeyEvent.VK_B);
+        hexCalcItem.setMnemonic(KeyEvent.VK_H);
         exitItem.setMnemonic(KeyEvent.VK_E);
 
+
+        helpMenu.setMnemonic(KeyEvent.VK_H);
+        aboutItem.setMnemonic(KeyEvent.VK_A);
+
+
+        //Adding MenuItem to the Menu
         calculatorMenu.add(decimalCalcItem);
         calculatorMenu.add(binaryCalcItem);
         calculatorMenu.add(bigNumberCalcItem);
+        calculatorMenu.add(hexCalcItem);
         calculatorMenu.add(exitItem);
 
         helpMenu.add(aboutItem);
         helpMenu.add(operationsItem);
 
 
+        //Adding Menu to Menu Bar
         menuBar.add(calculatorMenu);
         menuBar.add(helpMenu);
 
         this.setJMenuBar(menuBar);
         this.setVisible(true);
     }
+
+    /**
+     * This method clear the canvas by making every panel invisible.
+     */
     public void clearCanvas() {
         decimalPanel.setVisible(false);
         binaryPanel.setVisible(false);
         bigNumberPanel.setVisible(false);
+        hexPanel.setVisible(false);
 
     }
 
 
+    /**
+     * ActionListener for all the buttons.
+     * @param e (Event)
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
 
+        //Decimal Calculator
         if (e.getSource() == decimalCalcItem) {
             clearCanvas();
             this.add(decimalPanel);
@@ -104,18 +142,31 @@ class UserInterface extends JFrame implements ActionListener {
             decimalPanel.setVisible(true);
 
         }
+
+        //Binary Calculator
         if (e.getSource() == binaryCalcItem) {
             clearCanvas();
             this.add(binaryPanel);
             this.setSize(binaryPanel.getPreferredSize());
             binaryPanel.setVisible(true);
         }
+
+        //BigNumber Calculator
         if (e.getSource() == bigNumberCalcItem) {
             clearCanvas();
             this.add(bigNumberPanel);
             this.setSize(bigNumberPanel.getPreferredSize());
             bigNumberPanel.setVisible(true);
         }
+
+        //HexDecimal Calculator
+        if (e.getSource() == hexCalcItem) {
+            clearCanvas();
+            this.add(hexPanel);
+            this.setSize(hexPanel.getPreferredSize());
+            hexPanel.setVisible(true);
+        }
+        //About Button
         if (e.getSource() == aboutItem) {
             aboutFrame = new JFrame();
             aboutFrame.setSize(200, 200);
@@ -133,6 +184,7 @@ class UserInterface extends JFrame implements ActionListener {
             aboutFrame.setVisible(true);
 
         }
+        // Operation help menu
         if (e.getSource() == operationsItem) {
             operatorFrame = new JFrame();
             operatorFrame.setSize(299, 125);
@@ -150,8 +202,10 @@ class UserInterface extends JFrame implements ActionListener {
             operatorFrame.add(operatorPanel);
             operatorFrame.setVisible(true);
         }
+        //Exit Button
         if (e.getSource() == exitItem) {
             System.exit(0);
         }
     }
 }
+//END

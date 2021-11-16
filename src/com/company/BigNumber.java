@@ -3,12 +3,18 @@ package com.company;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+
+/**
+ * This is the backend brain of the BigNumber GUI.
+ * @author Varun Parbhakar
+ * @version 11-16-2021
+ */
 public class BigNumber extends Calculator{
 
     /**
      * This method adds two BigDecimals and returns the results
-     * @param theNumber1
-     * @param theNumber2
+     * @param theNumber1 (BigDecimal)
+     * @param theNumber2 (BigDecimal)
      * @return (Number1 + Number2)
      */
     public static BigDecimal add(BigDecimal theNumber1, BigDecimal theNumber2) {
@@ -16,7 +22,11 @@ public class BigNumber extends Calculator{
     }
 
     /**
-     * This the Subtract method has a bug with same numbers, it can't display 0 properly
+     * This the Subtract method has a bug with same numbers, it can't display 0's properly
+     * so to combat that problem I have a check for that situation.
+     * @param theNumber1 (BigDecimal)
+     * @param theNumber2 (BigDecimal)
+     * @return (Number1 - Number2)
      */
     public static BigDecimal subtract(BigDecimal theNumber1, BigDecimal theNumber2) {
         if (theNumber1.equals(theNumber2)) {
@@ -26,19 +36,18 @@ public class BigNumber extends Calculator{
     }
 
     /**
-     * Bug where if both numbers are negative then the online calculation doesn't work
+     * This method deals with multiplication. The calculator has a bug where
+     * if both numbers are negative then the calculator doesn't work, I have
+     * made so that this method works with the negatives.
      * @param theNumber1
      * @param theNumber2
-     * @return
+     * @return (Number1 * Number2)
      */
     public static BigDecimal multiply(BigDecimal theNumber1, BigDecimal theNumber2) {
-        if ((!theNumber1.equals(BigDecimal.ZERO) && !theNumber2.equals(BigDecimal.ZERO) ) ) {
-            return theNumber1.multiply(theNumber2, PRECISION_CONSTANT);
-        } else if ((theNumber1.equals(BigDecimal.ZERO) || theNumber2.equals(BigDecimal.ZERO) )) {
+        if ((theNumber1.equals(BigDecimal.ZERO) || theNumber2.equals(BigDecimal.ZERO) ) ) {
             return BigDecimal.ZERO;
         } else {
-
-            throw new IllegalArgumentException("Both Numbers cannot be 0");
+            return theNumber1.multiply(theNumber2, PRECISION_CONSTANT);
         }
 
     }
@@ -182,3 +191,4 @@ public class BigNumber extends Calculator{
     }
 
 }
+//END
