@@ -1,6 +1,7 @@
 package com.company;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -97,6 +98,7 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
             button.addActionListener(this);
 
         }
+        this.setPreferredSize(new Dimension(1000,200));
 
     }
 
@@ -165,11 +167,15 @@ public class BigNumberGUI extends JPanel implements NumberGUI {
                 if(!isZero(xTextField.getText()) && !isDecimal(yTextField.getText())) {
                     myXValue = new BigDecimal(xTextField.getText());
                     myY_Integer = Integer.parseInt(yTextField.getText());
-                    String solutionString =(BigNumber.power(myXValue, myY_Integer)).toPlainString();
-                    if (solutionString.length() > Calculator.PRECISION_CONSTANT.getPrecision()) {
+
+                    if (myY_Integer > 200 || ((myXValue.compareTo(new BigDecimal("9999"))) > 0)) {
                         solutionTextField.setText("Solution too long to Display");
                     } else {
-                        solutionTextField.setText(BigNumber.power(myXValue, myY_Integer).toPlainString());
+                        if (BigNumber.power(myXValue, myY_Integer).toPlainString().length() > Calculator.PRECISION_CONSTANT.getPrecision()) {
+                            solutionTextField.setText("Solution too long to Display");
+                        } else {
+                            solutionTextField.setText(BigNumber.power(myXValue, myY_Integer).toPlainString());
+                        }
                     }
                 } else {
                     // I know that if both situations are true both messages will not be provided
